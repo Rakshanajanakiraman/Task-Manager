@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Dashboard</h3>
+
+<div class="nav-links mb-20">
+    <a href="/add_task" class="btn btn-primary">+ Add Task</a>
+    <a href="/logout" class="btn btn-primary">Logout</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>
+                {% if task.status == 'Pending' %}
+                    <span class="badge badge-pending">{{ task.status }}</span>
+                {% elif task.status == 'Completed' %}
+                    <span class="badge badge-completed">{{ task.status }}</span>
+                {% else %}
+                    <span class="badge badge-in-progress">{{ task.status }}</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="/complete/{{ task.id }}" class="btn btn-info">Complete</a>
+                <a href="/edit/{{ task.id }}" class="btn btn-secondary">Edit</a>
+                <a href="/delete/{{ task.id }}" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if not tasks %}
+<p class="text-center mt-20">No tasks yet. <a href="/add_task">Create one now!</a></p>
+{% endif %}
+
+{% endblock %}
